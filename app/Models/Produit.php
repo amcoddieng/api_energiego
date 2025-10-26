@@ -14,6 +14,11 @@ class Produit extends Model
         'id_categorie','id_promotion','id_marque','nom','description','prix','stock','image'
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'id_produit';
+    }
+
     public function categorie() {
         return $this->belongsTo(Categorie::class, 'id_categorie', 'id_categorie');
     }

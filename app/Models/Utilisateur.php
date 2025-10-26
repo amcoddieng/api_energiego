@@ -14,6 +14,11 @@ class Utilisateur extends Model
         'nom','prenom','email','motDePasse','role','dateInscription'
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'id_utilisateur';
+    }
+
     public function client() {
         return $this->hasOne(Client::class, 'id_utilisateur', 'id_utilisateur');
     }
