@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Http\Response;
 
 class UtilisateurController extends Controller
@@ -52,10 +53,11 @@ class UtilisateurController extends Controller
             'prenom' => 'required|string|max:254',
             'email' => 'required|string|max:254',
             'motDePasse' => 'required|string|max:254',
-            'role' => 'required|string|max:254',
-            'dateInscription' => 'required|date',
+            'role' => 'required|string|max:254'
         ]);
         $model = Utilisateur::create($data);
+        // $data['dateInscription'] = now()->format('Y-m-d H:i:s');
+        // $model = Utilisateur::create($data);
         return response()->json($model, Response::HTTP_CREATED);
     }
 

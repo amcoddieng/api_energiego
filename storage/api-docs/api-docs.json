@@ -142,6 +142,179 @@
                 }
             }
         },
+        "/api/auth/login": {
+            "post": {
+                "summary": "Connexion (tous rôles)",
+                "operationId": "8dcb70df1020986038d098cc08d05dae",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@exemple.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "secret"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "example": "client",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/Utilisateur"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Identifiants invalides"
+                    }
+                }
+            }
+        },
+        "/api/auth/admin/login": {
+            "post": {
+                "summary": "Connexion administrateur",
+                "operationId": "40bcb05ed57779f2d1198a94eb6ac5c8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Identifiants invalides"
+                    }
+                }
+            }
+        },
+        "/api/auth/user/login": {
+            "post": {
+                "summary": "Connexion client/utilisateur",
+                "operationId": "e9d8692e3b20cc0cdc838c581b3cde5a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Identifiants invalides"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "summary": "Déconnexion",
+                "operationId": "69281b12abb272c76871f19cb17ca563",
+                "responses": {
+                    "204": {
+                        "description": "Déconnecté"
+                    }
+                },
+                "security": [
+                    {
+                        "0": {
+                            "sanctum": []
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/auth/me": {
+            "get": {
+                "summary": "Profil courant",
+                "operationId": "b9abb1a7a74670a19c215c2c133f14d8",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Utilisateur"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "0": {
+                            "sanctum": []
+                        }
+                    }
+                ]
+            }
+        },
         "/api/avis": {
             "get": {
                 "summary": "Lister les avis",
@@ -1799,6 +1972,13 @@
                     }
                 },
                 "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "bearerFormat": "Token",
+                "scheme": "bearer"
             }
         }
     }

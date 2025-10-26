@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('email', 254);
             $table->string('motDePasse', 254);
             $table->string('role', 254);
-            $table->dateTime('dateInscription');
+            $table->dateTime('dateInscription')->default(now());
         });
     }
     public function down(): void {
