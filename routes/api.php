@@ -11,17 +11,37 @@ Route::get('/',function(){
 });
 // API resources
 Route::apiResource('utilisateurs', \App\Http\Controllers\UtilisateurController::class);
-Route::apiResource('categories', \App\Http\Controllers\CategorieController::class);
-Route::apiResource('marques', \App\Http\Controllers\MarqueController::class);
-Route::apiResource('promotions', \App\Http\Controllers\PromotionController::class);
-Route::apiResource('paiements', \App\Http\Controllers\PaiementController::class);
-Route::apiResource('produits', \App\Http\Controllers\ProduitController::class);
-Route::apiResource('clients', \App\Http\Controllers\ClientController::class);
-Route::apiResource('administrateurs', \App\Http\Controllers\AdministrateurController::class);
-Route::apiResource('commandes', \App\Http\Controllers\CommandeController::class);
+
+// Public read, admin write
+Route::apiResource('categories', \App\Http\Controllers\CategorieController::class)->only(['index','show']);
+Route::apiResource('marques', \App\Http\Controllers\MarqueController::class)->only(['index','show']);
+Route::apiResource('promotions', \App\Http\Controllers\PromotionController::class)->only(['index','show']);
+Route::apiResource('produits', \App\Http\Controllers\ProduitController::class)->only(['index','show']);
+
+Route::middleware(['auth:sanctum','role:admin'])->group(function () {
+    Route::apiResource('categories', \App\Http\Controllers\CategorieController::class)->only(['store','update','destroy']);
+    Route::apiResource('marques', \App\Http\Controllers\MarqueController::class)->only(['store','update','destroy']);
+    Route::apiResource('promotions', \App\Http\Controllers\PromotionController::class)->only(['store','update','destroy']);
+    Route::apiResource('produits', \App\Http\Controllers\ProduitController::class)->only(['store','update','destroy']);
+});
+
+// Client/Admin authenticated actions
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('paiements', \App\Http\Controllers\PaiementController::class)->only(['store']);
+    Route::apiResource('commandes', \App\Http\Controllers\CommandeController::class)->only(['store','update','destroy']);
+    Route::apiResource('lignes-commande', \App\Http\Controllers\LigneCommandeController::class)
+        ->only(['store','update','destroy'])
+        ->parameters(['lignes-commande' => 'ligneCommande']);
+    Route::apiResource('avis', \App\Http\Controllers\AvisController::class)->only(['store','update','destroy']);
+});
+
+// Public reads for non-admin
+Route::apiResource('paiements', \App\Http\Controllers\PaiementController::class)->only([]);
+Route::apiResource('commandes', \App\Http\Controllers\CommandeController::class)->only(['index','show']);
 Route::apiResource('lignes-commande', \App\Http\Controllers\LigneCommandeController::class)
+    ->only(['index','show'])
     ->parameters(['lignes-commande' => 'ligneCommande']);
-Route::apiResource('avis', \App\Http\Controllers\AvisController::class);
+Route::apiResource('avis', \App\Http\Controllers\AvisController::class)->only(['index','show']);
 
 // Auth routes (Sanctum)
 Route::prefix('auth')->group(function () {
