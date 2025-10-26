@@ -19,5 +19,6 @@ Route::apiResource('produits', \App\Http\Controllers\ProduitController::class);
 Route::apiResource('clients', \App\Http\Controllers\ClientController::class);
 Route::apiResource('administrateurs', \App\Http\Controllers\AdministrateurController::class);
 Route::apiResource('commandes', \App\Http\Controllers\CommandeController::class);
-Route::apiResource('lignes-commande', \App\Http\Controllers\LigneCommandeController::class);
+Route::apiResource('lignes-commande', \App\Http\Controllers\LigneCommandeController::class)
+    ->parameters(['lignes-commande' => 'ligneCommande']);
 Route::apiResource('avis', \App\Http\Controllers\AvisController::class);
