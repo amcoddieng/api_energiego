@@ -6,43 +6,40 @@ use Illuminate\Http\Request;
 
 class CreateUserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function createUser(Request $req)
     {
-        //
-    }
+        $validator = $req->validate([
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'role' => 'string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
+        if($validator::fails()){
+            return response()->json([
+                'status'=>402,
+                'message'=>'erreur'
+            ]);
+        }
+        if(user::where('email',$req->email)->exist()){
+            return response()->json([
+                'status' => 400,
+                'message' => 'Cet email est déjà utilisé.',
+            ], 400);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+         $user = User::create([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'role' => $request->role ?? 'user',
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json([
+            'status' => 201,
+            'message' => 'Utilisateur créé avec succès.',
+            'user' => $user,
+        ], 201);
     }
 }
