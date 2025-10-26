@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 
 class Utilisateur extends Model
 {
+    use HasApiTokens;
     protected $table = 'Utilisateur';
     protected $primaryKey = 'id_utilisateur';
     public $timestamps = false;
@@ -17,6 +20,15 @@ class Utilisateur extends Model
     public function getRouteKeyName(): string
     {
         return 'id_utilisateur';
+    }
+
+    public function setMotDePasseAttribute($value): void
+    {
+        if ($value && !str_starts_with((string) $value, '$2y$')) {
+            $this->attributes['motDePasse'] = Hash::make($value);
+        } else {
+            $this->attributes['motDePasse'] = $value;
+        }
     }
 
     public function client() {

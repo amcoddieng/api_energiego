@@ -14,6 +14,13 @@ use OpenApi\Annotations as OA;
  *     description="Serveur local"
  * )
  *
+ * @OA\SecurityScheme(
+ *   securityScheme="sanctum",
+ *   type="http",
+ *   scheme="bearer",
+ *   bearerFormat="Token"
+ * )
+ *
  * @OA\Schema(
  *   schema="Produit",
  *   type="object",

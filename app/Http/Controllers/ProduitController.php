@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produit;
+use OpenApi\Annotations as OA;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

@@ -22,3 +22,15 @@ Route::apiResource('commandes', \App\Http\Controllers\CommandeController::class)
 Route::apiResource('lignes-commande', \App\Http\Controllers\LigneCommandeController::class)
     ->parameters(['lignes-commande' => 'ligneCommande']);
 Route::apiResource('avis', \App\Http\Controllers\AvisController::class);
+
+// Auth routes (Sanctum)
+Route::prefix('auth')->group(function () {
+    Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);
+    Route::post('admin/login', [\App\Http\Controllers\AuthController::class, 'adminLogin']);
+    Route::post('user/login', [\App\Http\Controllers\AuthController::class, 'userLogin']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+        Route::get('me', [\App\Http\Controllers\AuthController::class, 'me']);
+    });
+});
