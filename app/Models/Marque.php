@@ -12,6 +12,11 @@ class Marque extends Model
 
     protected $fillable = ['nom','paysOrigine'];
 
+    public function getRouteKeyName(): string
+    {
+        return 'id_marque';
+    }
+
     public function produits() {
         return $this->hasMany(Produit::class, 'id_marque', 'id_marque');
     }
